@@ -13,6 +13,5 @@
     </head>
     <body>
         <h1>Trang chủ!</h1>
-        <a url
     </body>
 </html>

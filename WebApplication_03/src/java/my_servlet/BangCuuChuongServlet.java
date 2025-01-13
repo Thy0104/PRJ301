@@ -39,7 +39,7 @@ public class BangCuuChuongServlet extends HttpServlet {
             out.println("</head>");
             out.println("<body>");
             for (int i=2; i<=10; i++){
-                out.println("<h4>Bảng cửu chương "+"</h4>");
+                out.println("<h4>Bảng cửu chương "+i+"</h4>");
                 for (int j=1; j<=10;j++){
                     out.println(i +" *"+j+" = "+(i*j)+"</br>");
                 }
