@@ -43,7 +43,9 @@ public class LoginServlet extends HttpServlet {
             //get parameters
             String username = request.getParameter("txtUsername");
             String password = request.getParameter("txtpassword");
-            
+            out.println("Username: " + username);
+            out.println("</br>");
+            out.println("Password: " + password);            
             out.println("</body>");
             out.println("</html>");
         }
