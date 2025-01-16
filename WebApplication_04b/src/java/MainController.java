@@ -16,74 +16,49 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author baothy2004
  */
-@WebServlet(name = "MainController",urlPatterns = {"/MainController"})
+@WebServlet(urlPatterns = {"/MainController"})
 public class MainController extends HttpServlet {
-    public int GCD (int a, int b){
-        int min = Math.min(a, b);
-        for(int i=min;i>=1; i--){
-            if(a%i==0 && b%i==0){
-                return i;
-            }
-        }
-        return 1;
-    }
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        String txtA = request.getParameter("txtA");
-        String txtB = request.getParameter("txtB");
+        String txtUsername = request.getParameter("txtUsername");
+        String txtPassword = request.getParameter("txtPassword");
         
-        if(txtA.trim().length()== 0){
-            out.println("Please enter a!:");
+        if (txtUsername.trim().length()==0){
+            out.println("Please enter username!");
             return;
         }
         
-        if(txtB.trim().length()== 0){
-            out.println("Please enter b!:");
+        if (txtPassword.trim().length()==0|| txtPassword.trim().length()<8){
+            out.println("Password must be than 8 characters");
             return;
         }
         
-        int a = 0;
-        int b = 0;
-        try {
-            a = Integer.parseInt(txtB);
-            if (a<=0){
-                out.println("a must be greater than zero!");
-                return;
-            }
-        } catch  (Exception e) {
-            out.println("a must be integer!");
+        if(txtUsername.equals("admin")&& txtPassword.equals("12345678")){
+            out.println("Login successful!");
             return;
-        }
-        
-        try {
-            b = Integer.parseInt(txtB);
-            if (b<=0){
-                out.println("b must be greater than zero!");
-                return;
-            }
-        } catch  (Exception e) {
-            out.println("b must be integer!");
-            return;
-        }
-        
-        int result = GCD(a,b);
-        out.println("Greatest Common Divisor("+a+","+b+") = "+result);
-    }    
-        
-  @Override
+        }else{
+           out.println("Username or password invalid");
+           return;
+        }    
+    }
+
+    
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
+    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
+
     
     @Override
     public String getServletInfo() {
