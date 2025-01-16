@@ -53,6 +53,36 @@ public class MainController extends HttpServlet {
            response.sendRedirect("invalid.html");
            
            //compare RequestDispatcher /  response.sendRedirect? khac biet? khi nao nen dung?
+           //So sánh RequestDispatcher và response.sendRedirect:
+           /* Cách chuyển hướng:
+
+            RequestDispatcher chuyển tiếp yêu cầu nội bộ trong server mà không thay đổi URL trên trình duyệt.
+            response.sendRedirect thực hiện chuyển hướng từ client, tạo một yêu cầu HTTP mới và thay đổi URL trên trình duyệt.
+            Hiệu suất:
+
+            RequestDispatcher nhanh hơn vì không cần vòng lặp client-server.
+            response.sendRedirect chậm hơn vì có thêm một yêu cầu từ client đến server.
+            Phạm vi dữ liệu:
+
+            RequestDispatcher cho phép chia sẻ dữ liệu qua request.setAttribute().
+            response.sendRedirect không giữ dữ liệu vì yêu cầu mới được tạo.
+            Trường hợp sử dụng:
+
+            RequestDispatcher dùng khi chuyển tiếp trong cùng ứng dụng mà không cần thay đổi URL.
+            response.sendRedirect dùng khi cần chuyển đến trang ngoài hoặc URL khác với URL mới hiển thị trên trình duyệt.
+            Giữ trạng thái:
+            RequestDispatcher giữ trạng thái request và response.
+            response.sendRedirect không giữ trạng thái request và response.
+            
+            Khi nào nên dùng:
+            RequestDispatcher:Khi cần chuyển tiếp yêu cầu mà không cần thay đổi URL trên trình duyệt.
+                              Khi muốn giữ lại dữ liệu trong đối tượng request.
+                
+
+            response.sendRedirect:Khi cần chuyển hướng đến URL khác hoặc ứng dụng khác.
+                                  Khi muốn thay đổi URL để phản ánh trang mới.*/
+
+
         }    
     }
 
