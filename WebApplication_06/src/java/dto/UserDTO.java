@@ -58,6 +58,7 @@ public class UserDTO {
     public String toString() {
         return "UserDTO{" + "useID=" + useID + ", fullname=" + fullname + ", roleID=" + roleID + ", password=" + password + '}';
     }
+
     
 }
 
