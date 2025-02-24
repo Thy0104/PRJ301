@@ -64,7 +64,7 @@ public class UserDTO {
     }
 
     public String getFullName() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return fullname;
     }
 
 }

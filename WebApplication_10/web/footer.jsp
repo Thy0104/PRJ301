@@ -7,16 +7,13 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <style>
     .footer {
-        background-color: #E7E6E6;
+        background-color: #2c3e50;
+        color: #fff;
         padding: 3rem 0;
-        margin-bottom:  2rem;
-        position:absolute;
-        bottom:0;
-        width:100%;
-        height:170px;
+        margin-top: 2rem;
     }
-    
-    .footer-container{
+
+    .footer-container {
         max-width: 1200px;
         margin: 0 auto;
         padding: 0 1rem;
@@ -24,18 +21,17 @@
         grid-template-columns: repeat(4, 1fr);
         gap: 2rem;
     }
-    
+
     .footer-section h3 {
         font-size: 1.2rem;
         margin-bottom: 1rem;
-        color: #ff0000;
+        color: #3498db;
     }
 
     .footer-section p {
         margin-bottom: 0.5rem;
         font-size: 0.9rem;
-        line-height: 1.0;
-        color:#0033ff;
+        line-height: 1.5;
     }
 
     .footer-links {
@@ -47,7 +43,7 @@
     }
 
     .footer-links a {
-        color: #0033ff;
+        color: #fff;
         text-decoration: none;
         transition: color 0.3s ease;
     }
@@ -63,7 +59,7 @@
     }
 
     .social-links a {
-        color: #3498db;
+        color: #fff;
         text-decoration: none;
         font-size: 1.5rem;
     }
@@ -74,36 +70,36 @@
         margin-top: 2rem;
         border-top: 1px solid #34495e;
         font-size: 0.9rem;
-        background-color: #cccccc;
-        height:30px;
     }
 </style>
- <footer class="footer">
-        <div class="footer-container">
+
+<footer class="footer">
+    <div class="footer-container">
         <div class="footer-section">
             <h3>Về chúng tôi</h3>
-            <p></p>
+            <p>Shop Online là điểm đến tin cậy cho những sản phẩm chất lượng với giá cả hợp lý. Chúng tôi cam kết mang đến trải nghiệm mua sắm tốt nhất cho khách hàng.</p>
         </div>
+        
         <div class="footer-section">
             <h3>Liên kết nhanh</h3>
             <ul class="footer-links">
-                <li><a href="#">a</a></li>
-                <li><a href="#">b</a></li>
-                <li><a href="#">c</a></li>
-                <li><a href="#">d</a></li>
+                <li><a href="#">Trang chủ</a></li>
+                <li><a href="#">Sản phẩm</a></li>
+                <li><a href="#">Giỏ hàng</a></li>
+                <li><a href="#">Chính sách</a></li>
             </ul>
         </div>
         
         <div class="footer-section">
             <h3>Liên hệ</h3>
-            <p>Địa chỉ: </p>
-            <p>Email: </p>
-            <p>Điện thoại: </p>
+            <p>Địa chỉ: 123 Đường ABC, Quận XYZ</p>
+            <p>Email: contact@shoponline.com</p>
+            <p>Điện thoại: (84) 123-456-789</p>
         </div>
         
         <div class="footer-section">
             <h3>Theo dõi chúng tôi</h3>
-            <p></p>
+            <p>Cập nhật tin tức mới nhất và khuyến mãi từ chúng tôi</p>
             <div class="social-links">
                 <a href="#">📱</a>
                 <a href="#">💬</a>
@@ -113,7 +109,6 @@
     </div>
     
     <div class="copyright">
-        <p>&copy;</p>
+        <p>&copy; 2024 Game Online. Tất cả quyền được bảo lưu.</p>
     </div>
-    </footer>
-
+</footer>
