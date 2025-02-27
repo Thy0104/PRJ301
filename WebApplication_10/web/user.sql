@@ -21,3 +21,4 @@ INSERT INTO tblUsers (userID, fullName, roleID, password) VALUES
 ('user001', N'Nguyễn Văn Anh', 'US', 'user123'),
 ('user002', N'Trần Thị Bình', 'US', 'user456');
 GO
+
