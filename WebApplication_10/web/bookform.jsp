@@ -5,6 +5,7 @@
 --%>
 
 <%@page import="dto.BookDTO"%>
+<%@page import="java.awt.print.Book" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
