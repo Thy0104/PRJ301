@@ -138,7 +138,10 @@
             
         %>
         <div class="container">
+            <h1>Book Information</h1>
             <form action="MainController" method="post">
+                <input type="hidden" name="action" value="add"/>
+                
                 <div class="form-group">
                     <label for="txtBookID">Book ID:</label>
                     <input type="text" id="txtBookID" value="<%=book.getBookID()%>"/>
