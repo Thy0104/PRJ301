@@ -90,6 +90,8 @@
                 Search Books: <input type="text" name="searchTerm" value="<%=searchTerm%>"/>
                 <input type="submit" value="Search"/>
             </form>
+                
+                <a href="bookform.jsp">Add</a>
 
             <%
                 if (request.getAttribute("books") != null) {
