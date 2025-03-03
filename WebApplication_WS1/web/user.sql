@@ -1,0 +1,12 @@
+CREATE DATABASE prj301_WS1
+GO
+
+USE prj301_WS1
+GO
+
+CREATE TABLE tblUsers (
+    Username VARCHAR(50) PRIMARY KEY,
+    Name VARCHAR(100) NOT NULL,
+    Password VARCHAR(255) NOT NULL,
+    Role VARCHAR(20) NOT NULL CHECK (Role IN ('Founder', 'Team Member'))
+);
