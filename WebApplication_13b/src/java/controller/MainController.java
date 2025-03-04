@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import utils.AuthUtils;
 
 /**
  *
@@ -32,8 +33,40 @@ public class MainController extends HttpServlet {
     private static final String LOGIN_PAGE = "login.jsp";
     
     private String processLogin(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-        
+        String url = LOGIN_PAGE;
+        //
+        String strUserID = request.getParameter("txtUserID");
+        String strPassword = request.getParameter("txtPassword");
+        if(AuthUtils.isValidLogin(strUserID, strPassword)){
+            url = "search.jsp";
+            UserDTO user = AuthUtils.getUser(strUserID);
+            request.getSession().setAttribute("user", user);
+            
+            //search
+            processSearch(request, response);   
+        } else{
+            request.setAttribute("message", "Incorrect User ID or Password");
+            url = "login.jsp";
+        }
+        //
+        return url;
     }
+    
+    private void processLogout(HttpServletRequest request, HttpServletResponse response) throws SecurityException, IOException{
+        String url ="LOGIN_PAGE";
+        //
+        HttpSession session = request.getSession();
+        if (AuthUtils.isLoggedIn(session)){
+            request.getSession().invalidate(); // Hủy bỏ session
+            url = "login.jsp";
+        }
+        //
+        return url;
+    }
+    
+    private void processSearch(HttpServletRequest request, HttpServletResponse response) throws SecurityException, IOException{
+       String url = 
+    }    
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
