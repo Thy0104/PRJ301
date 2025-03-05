@@ -4,8 +4,8 @@
     Author     : baothy2004
 --%>
 
-<%@page import="dto.BookDTO"%>
-<%@page import="java.awt.print.Book"%>
+<%@page import="dto.ProjectDTO"%>
+<%@page import="java.awt.print.project"%>
 <%@page import="java.util.List"%>
 <%@page import="dto.UserDTO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>

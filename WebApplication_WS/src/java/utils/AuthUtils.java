@@ -19,12 +19,12 @@ public class AuthUtils {
     
     public static UserDTO getUser(String strUserID){
         UserDAO udao = new UserDAO();
-        UserDTO user = udao.readById(strUserID);
+        UserDTO user = udao.readById(strUsername);
         return user;
     } 
     
     public static boolean isValidLogin(String strUserID, String strPassword){
-        UserDTO user = getUser(strUserID);
+        UserDTO user = getUser(strUsername);
         System.out.println(user);
         //System.out.println(user.getPassword());
         System.out.println(strPassword);

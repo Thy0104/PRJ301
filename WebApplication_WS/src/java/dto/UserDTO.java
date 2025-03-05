@@ -10,44 +10,35 @@ package dto;
  * @author baothy2004
  */
 public class UserDTO {
-    private String userID;
-    private String fullname;
-    private String roleID;
+    private String username ;
+    private String name;
     private String password;
-    
-    public UserDTO(){
-        
+    private String role;
+
+    public UserDTO() {
     }
-    
-    public UserDTO(String userID, String fullname, String roleID, String password) {
-        this.userID = userID;
-        this.fullname = fullname;
-        this.roleID = roleID;
+
+    public UserDTO(String username, String name, String password, String role) {
+        this.username = username;
+        this.name = name;
         this.password = password;
+        this.role = role;
     }
 
-    public String getUserID() {
-        return userID;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserID(String userID) {
-        this.userID = userID;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getFullname() {
-        return fullname;
+    public String getName() {
+        return name;
     }
 
-    public void setFullname(String fullname) {
-        this.fullname = fullname;
-    }
-
-    public String getRoleID() {
-        return roleID;
-    }
-
-    public void setRoleID(String roleID) {
-        this.roleID = roleID;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getPassword() {
@@ -58,13 +49,16 @@ public class UserDTO {
         this.password = password;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     @Override
     public String toString() {
-        return "UserDTO{" + "userID=" + userID + ", fullname=" + fullname + ", roleID=" + roleID + ", password=" + password + '}';
-    }
-
-    public String getFullName() {
-        return fullname;
-    }
-
+        return "UserDTO{" + "username=" + username + ", name=" + name + ", password=" + password + ", role=" + role + '}';
+    }           
 }

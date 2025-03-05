@@ -86,8 +86,8 @@
                     <input type="hidden" name="action" value="login" />
 
                     <div class="form-group">
-                        <label for="userId">Tên đăng nhập</label>
-                        <input type="text" id="userId" name="txtUserID" required />
+                        <label for="username">Tên đăng nhập</label>
+                        <input type="text" id="userId" name="txtUsername" required />
                     </div>
 
                     <div class="form-group">

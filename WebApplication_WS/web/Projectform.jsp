@@ -5,15 +5,15 @@
 --%>
 
 <%@page import="dto.UserDTO"%>
-<%@page import="dto.BookDTO"%>
-<%@page import="java.awt.print.Book"%>
+<%@page import="dto.ProjectDTO"%>
+<%@page import="java.awt.print.Project"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Book Management</title>
+        <title>Project Management</title>
         <style>
             * {
                 box-sizing: border-box;
@@ -173,66 +173,60 @@
                     if (user.getRoleID().equals("AD")) {
             %>
             <%
-                BookDTO book = new BookDTO();
+                ProjectDTO book = new ProjectDTO();
                 try {
-                    book = (BookDTO) request.getAttribute("book");
+                    project = (ProjectDTO) request.getAttribute("project");
                 } catch (Exception e) {
-                    book = new BookDTO();
+                    project = new ProjectDTO();
                 }
-                if (book == null) {
-                    book = new BookDTO();
+                if (project == null) {
+                    project = new ProjectDTO();
                 }
                 // get error information
-                String txtBookID_error = request.getAttribute("txtBookID_error") + "";
-                txtBookID_error = txtBookID_error.equals("null") ? "" : txtBookID_error;
-                String txtTitle_error = request.getAttribute("txtTitle_error") + "";
-                txtTitle_error = txtTitle_error.equals("null") ? "" : txtTitle_error;
-                String txtQuantity_error = request.getAttribute("txtQuantity_error") + "";
-                txtQuantity_error = txtQuantity_error.equals("null") ? "" : txtQuantity_error;
-            %>
+                String txtProject_id_error = request.getAttribute("txtProject_id_error") + "";
+                txtProject_id_error = txtProject_id_error.equals("null") ? "" : txtProject_id_error;
+                String txtProject_name_error = request.getAttribute("txtProject_name_error") + "";
+                txtProject_name_error = txtProject_name_error.equals("null") ? "" : txtProject_name_error;
+            %>   
             <div class="form-container">
                 <h1>Book Information</h1>
                 <form action="MainController" method="post">
                     <input type="hidden" name="action" value="add"/>
 
                     <div class="form-group">
-                        <label for="txtBookID">Book ID:</label>
-                        <input type="text" id="txtBookID" name="txtBookID" value="<%=book.getBookID()%>"/>
-                        <% if (!txtBookID_error.isEmpty()) {%>
-                        <div class="error-message"><%=txtBookID_error%></div>
+                        <label for="txtProject_id">Project ID:</label>
+                        <input type="text" id="txtProject_id" name="txtProject_id" value="<%=book.getProject_id()%>"/>
+                        <% if (!txtProject_id_error.isEmpty()) {%>
+                        <div class="error-message"><%=txtProject_id_error%></div>
                         <% }%>
                     </div>
 
                     <div class="form-group">
-                        <label for="txtTitle">Title:</label>
-                        <input type="text" id="txtTitle" name="txtTitle" value="<%=book.getTitle()%>"/>
-                        <% if (!txtTitle_error.isEmpty()) {%>
-                        <div class="error-message"><%=txtTitle_error%></div>
+                        <label for="txtProject_name">Project name:</label>
+                        <input type="text" id="txtTitle" name="txtProject_name" value="<%=book.getTitle()%>"/>
+                        <% if (!txtProject_name_error.isEmpty()) {%>
+                        <div class="error-message"><%=txtProject_name_error%></div>
                         <% }%>
                     </div>
 
                     <div class="form-group">
-                        <label for="txtAuthor">Author:</label>
-                        <input type="text" id="txtAuthor" name="txtAuthor" value="<%=book.getAuthor()%>"/>
-                    </div>
+                    <label for="description">Description:</label>
+                    <input type="text" id="description" name="description" required/>
+                </div>
 
-                    <div class="form-group">
-                        <label for="txtPublishYear">Publish Year:</label>
-                        <input type="number" id="txtPublishYear" name="txtPublishYear" value="<%=book.getPublishYear()%>"/>
-                    </div>
+                <div class="form-group">
+                    <label for="status">Status:</label>
+                    <select id="status" name="status" required>
+                        <option value="Pending">Pending</option>
+                        <option value="Ongoing">Ongoing</option>
+                        <option value="Completed">Completed</option>
+                    </select>
+                </div>
 
-                    <div class="form-group">
-                        <label for="txtPrice">Price:</label>
-                        <input type="number" id="txtPrice" name="txtPrice" value="<%=book.getPrice()%>"/>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="txtQuantity">Quantity:</label>
-                        <input type="number" id="txtQuantity" name="txtQuantity" value="<%=book.getQuantity()%>"/>
-                        <% if (!txtQuantity_error.isEmpty()) {%>
-                        <div class="error-message"><%=txtQuantity_error%></div>
-                        <% }%>
-                    </div>
+                <div class="form-group">
+                    <label for="estimated_launch">Estimated Launch Date:</label>
+                    <input type="date" id="estimated_launch" name="estimated_launch" required/>
+                </div>
 
                     <div class="button-group">
                         <input type="submit" value="Save" />
@@ -240,13 +234,13 @@
                     </div>
                 </form>
                 
-                <a href="MainController?action=search" class="back-link">Back to Book List</a>
+                <a href="MainController?action=search" class="back-link">Back to Project List</a>
             </div>
             <%} else {%>
             <div class="form-container error-container">
                 <h1>403 Error</h1>
                 <p>You do not have permission to access this content!</p>
-                <a href="MainController?action=search" class="back-link">Back to Book List</a>
+                <a href="MainController?action=search" class="back-link">Back to Project List</a>
             </div>
             <%}
                 } else {%>
