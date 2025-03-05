@@ -1,6 +1,6 @@
 <%-- 
     Document   : login
-    Created on : 05-Mar-2025, 09:49:25
+    Created on : 13-Feb-2025, 11:08:57
     Author     : baothy2004
 --%>
 
@@ -78,21 +78,21 @@
         </style>
     </head>
     <body>
-        <%@include file ="header.jsp" %>
+        <%@include file="header.jsp" %>
         <div class="login-container">
             <div class="login-form">
                 <h2 class="form-title">Đăng nhập</h2>
-                <form action="MainCotroller" method="post">
-                    <input type="hidden" name="action" value="login"/>
-                    
+                <form action="MainController" method="post">
+                    <input type="hidden" name="action" value="login" />
+
                     <div class="form-group">
                         <label for="userId">Tên đăng nhập</label>
-                        <input type="text" id="Username" name="txtUsername" required />
+                        <input type="text" id="userId" name="txtUserID" required />
                     </div>
 
                     <div class="form-group">
                         <label for="password">Mật khẩu</label>
-                        <input type="password" id="Password" name="txtPassword" required />
+                        <input type="password" id="password" name="txtPassword" required />
                     </div>
 
                     <button type="submit" class="submit-btn">Đăng nhập</button>
@@ -104,7 +104,7 @@
                 </form>
             </div>
         </div>
-        
-        <jsp:include page="footer.jsp"/>      
+
+        <jsp:include page="footer.jsp"/>
     </body>
 </html>

@@ -9,22 +9,24 @@ package dto;
  *
  * @author baothy2004
  */
-public class ProjectDTO {
+import java.sql.Date;
+
+public class ProjectDTO  {
     private int project_id;
     private String project_name;
     private String description;
     private String status;
-    private String estimate_lanch;
+    private String estimated_launch;
 
     public ProjectDTO() {
     }
 
-    public ProjectDTO(int project_id, String project_name, String description, String status, String estimate_lanch) {
+    public ProjectDTO(int project_id, String project_name, String description, String status, String estimated_launch) {
         this.project_id = project_id;
         this.project_name = project_name;
         this.description = description;
         this.status = status;
-        this.estimate_lanch = estimate_lanch;
+        this.estimated_launch = estimated_launch;
     }
 
     public int getProject_id() {
@@ -59,18 +61,17 @@ public class ProjectDTO {
         this.status = status;
     }
 
-    public String getEstimate_lanch() {
-        return estimate_lanch;
+    public String getEstimated_launch() {
+        return estimated_launch;
     }
 
-    public void setEstimate_lanch(String estimate_lanch) {
-        this.estimate_lanch = estimate_lanch;
+    public void setEstimated_launch(String estimated_launch) {
+        this.estimated_launch = estimated_launch;
     }
 
     @Override
     public String toString() {
-        return "ProjectDTO{" + "project_id=" + project_id + ", project_name=" + project_name + ", description=" + description + ", status=" + status + ", estimate_lanch=" + estimate_lanch + '}';
+        return "ProjectDTO{" + "project_id=" + project_id + ", project_name=" + project_name +
+                ", description=" + description + ", status=" + status + ", estimated_launch=" + estimated_launch + '}';
     }
-    
-    
 }
