@@ -5,10 +5,12 @@
  */
 package controller;
 
-import dao.ProjectDAO;
-import dto.ProjectDTO;
+import dao.BookDAO;
+import dao.UserDAO;
+import dto.BookDTO;
 import dto.UserDTO;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -17,7 +19,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import Utils.AuthUtils;
+import utils.AuthUtils;
 
 /**
  *
@@ -26,7 +28,7 @@ import Utils.AuthUtils;
 @WebServlet(name = "MainController", urlPatterns = {"/MainController"})
 public class MainController extends HttpServlet {
 
-    private ProjectDAO projectDAO = new ProjectDAO();
+    private BookDAO bookDAO = new BookDAO();
 
     private static final String LOGIN_PAGE = "login.jsp";
 
@@ -34,17 +36,17 @@ public class MainController extends HttpServlet {
             throws ServletException, IOException {
         String url = LOGIN_PAGE;
         //
-        String strUsername = request.getParameter("txtUsername");
+        String strUserID = request.getParameter("txtUserID");
         String strPassword = request.getParameter("txtPassword");
-        if (AuthUtils.isValidLogin(strUsername, strPassword)) {
+        if (AuthUtils.isValidLogin(strUserID, strPassword)) {
             url = "search.jsp";
-            UserDTO user = AuthUtils.getUser(strUsername);
+            UserDTO user = AuthUtils.getUser(strUserID);
             request.getSession().setAttribute("user", user);
 
             // search
             processSearch(request, response);
         } else {
-            request.setAttribute("message", "Incorrect Username or Password");
+            request.setAttribute("message", "Incorrect UserID or Password");
             url = "login.jsp";
         }
         //
@@ -73,8 +75,9 @@ public class MainController extends HttpServlet {
             String searchTerm = request.getParameter("searchTerm");
             if (searchTerm == null) {
                 searchTerm = "";
-            
-            request.setAttribute("projects", projects);
+            }
+            List<BookDTO> books = bookDAO.searchByTitle2(searchTerm);
+            request.setAttribute("books", books);
             request.setAttribute("searchTerm", searchTerm);
         }
         return url;
@@ -86,6 +89,7 @@ public class MainController extends HttpServlet {
         HttpSession session = request.getSession();
         if (AuthUtils.isAdmin(session)) {
             String id = request.getParameter("id");
+            bookDAO.updateQuantityToZero(id);
             // search
             processSearch(request, response);
             url = "search.jsp";
@@ -94,38 +98,44 @@ public class MainController extends HttpServlet {
     }
 
     public String processAdd(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-    String url = LOGIN_PAGE;
-    HttpSession session = request.getSession();
-    if (AuthUtils.isFounder(session)) {  // Only Founders can add projects
-        try {
-            boolean checkError = false;
+            throws ServletException, IOException {
+        String url = LOGIN_PAGE;
+        HttpSession session = request.getSession();
+        if (AuthUtils.isAdmin(session)) {
+            try {
+                boolean checkError = false;
+                String bookID = request.getParameter("txtBookID");
+                String title = request.getParameter("txtTitle");
+                String author = request.getParameter("txtAuthor");
+                int publishYear = Integer.parseInt(request.getParameter("txtPublishYear"));
+                double price = Double.parseDouble(request.getParameter("txtPrice"));
+                int quantity = Integer.parseInt(request.getParameter("txtQuantity"));
 
-            String project_name = request.getParameter("txtProjectName");
-            String description = request.getParameter("txtDescription");
-            String status = request.getParameter("txtStatus");
-            String estimated_launch = request.getParameter("txtEstimatedLaunch");
+                if (bookID == null || bookID.trim().isEmpty()) {
+                    checkError = true;
+                    request.setAttribute("txtBookID_error", "Book ID cannot be empty.");
+                }
 
-            if (project_name == null || project_name.trim().isEmpty()) {
-                checkError = true;
-                request.setAttribute("txtProjectName_error", "Project name cannot be empty.");
+                if (quantity < 0) {
+                    checkError = true;
+                    request.setAttribute("txtQuantity_error", "Quantity >=0.");
+                }
+
+                BookDTO book = new BookDTO(bookID, title, author, publishYear, price, quantity);
+
+                if (!checkError) {
+                    bookDAO.create(book);
+                    // search
+                    url = processSearch(request, response);
+                } else {
+                    url = "bookForm.jsp";
+                    request.setAttribute("book", book);
+                }
+            } catch (Exception e) {
             }
-
-            if (!checkError) {
-                ProjectDTO project = new ProjectDTO(project_name, description, status, estimated_launch);
-                projectDAO.create(project);
-                url = processSearch(request, response);
-            } else {
-                url = "ProjectForm.jsp";
-                request.setAttribute("project", new ProjectDTO(project_name, description, status, estimated_launch));
-            }
-        } catch (Exception e) {
-            log("Error at processAdd: " + e.getMessage());
         }
+        return url;
     }
-    return url;
-}
-
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

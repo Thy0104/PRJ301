@@ -1,16 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controller;
 
-import dao.BookDAO;
+import dao.ProjectDAO;
 import dao.UserDAO;
-import dto.BookDTO;
+import dto.ProjectDTO;
 import dto.UserDTO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -21,48 +15,35 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import utils.AuthUtils;
 
-/**
- *
- * @author baothy2004
- */
 @WebServlet(name = "MainController", urlPatterns = {"/MainController"})
 public class MainController extends HttpServlet {
 
-    private BookDAO bookDAO = new BookDAO();
-
+    private ProjectDAO projectDAO = new ProjectDAO();
     private static final String LOGIN_PAGE = "login.jsp";
 
     private String processLogin(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String url = LOGIN_PAGE;
-        //
-        String strUserID = request.getParameter("txtUserID");
-        String strPassword = request.getParameter("txtPassword");
-        if (AuthUtils.isValidLogin(strUserID, strPassword)) {
+        String username = request.getParameter("txtUsername");
+        String password = request.getParameter("txtPassword");
+        if (AuthUtils.isValidLogin(username, password)) {
             url = "search.jsp";
-            UserDTO user = AuthUtils.getUser(strUserID);
+            UserDTO user = AuthUtils.getUser(username);
             request.getSession().setAttribute("user", user);
-
-            // search
             processSearch(request, response);
         } else {
-            request.setAttribute("message", "Incorrect UserID or Password");
-            url = "login.jsp";
+            request.setAttribute("message", "Incorrect Username or Password");
         }
-        //
         return url;
     }
 
     private String processLogout(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String url = LOGIN_PAGE;
-        //
         HttpSession session = request.getSession();
         if (AuthUtils.isLoggedIn(session)) {
-            request.getSession().invalidate(); // Hủy bỏ session
-            url = "login.jsp";
+            session.invalidate();
         }
-        //
         return url;
     }
 
@@ -71,14 +52,14 @@ public class MainController extends HttpServlet {
         String url = LOGIN_PAGE;
         HttpSession session = request.getSession();
         if (AuthUtils.isLoggedIn(session)) {
-            // search
             String searchTerm = request.getParameter("searchTerm");
             if (searchTerm == null) {
                 searchTerm = "";
             }
-            List<BookDTO> books = bookDAO.searchByTitle2(searchTerm);
-            request.setAttribute("books", books);
+            List<ProjectDTO> projects = projectDAO.searchByName(searchTerm);
+            request.setAttribute("projects", projects);
             request.setAttribute("searchTerm", searchTerm);
+            url = "search.jsp";
         }
         return url;
     }
@@ -88,11 +69,9 @@ public class MainController extends HttpServlet {
         String url = LOGIN_PAGE;
         HttpSession session = request.getSession();
         if (AuthUtils.isAdmin(session)) {
-            String id = request.getParameter("id");
-            bookDAO.updateQuantityToZero(id);
-            // search
-            processSearch(request, response);
-            url = "search.jsp";
+            String project_id = request.getParameter("project_id");
+            projectDAO.deleteProject(project_id);
+            url = processSearch(request, response);
         }
         return url;
     }
@@ -104,34 +83,28 @@ public class MainController extends HttpServlet {
         if (AuthUtils.isAdmin(session)) {
             try {
                 boolean checkError = false;
-                String bookID = request.getParameter("txtBookID");
-                String title = request.getParameter("txtTitle");
-                String author = request.getParameter("txtAuthor");
-                int publishYear = Integer.parseInt(request.getParameter("txtPublishYear"));
-                double price = Double.parseDouble(request.getParameter("txtPrice"));
-                int quantity = Integer.parseInt(request.getParameter("txtQuantity"));
+                String project_id = request.getParameter("txtProjectID");
+                String project_name = request.getParameter("txtProjectName");
+                String description = request.getParameter("txtDescription");
+                String status = request.getParameter("txtStatus");
+                String estimated_launch = request.getParameter("txtEstimatedLaunch");
 
-                if (bookID == null || bookID.trim().isEmpty()) {
+                if (project_id == null || project_id.trim().isEmpty()) {
                     checkError = true;
-                    request.setAttribute("txtBookID_error", "Book ID cannot be empty.");
+                    request.setAttribute("txtProjectID_error", "Project ID cannot be empty.");
                 }
 
-                if (quantity < 0) {
-                    checkError = true;
-                    request.setAttribute("txtQuantity_error", "Quantity >=0.");
-                }
-
-                BookDTO book = new BookDTO(bookID, title, author, publishYear, price, quantity);
+                ProjectDTO project = new ProjectDTO(project_id, project_name, description, status, estimated_launch);
 
                 if (!checkError) {
-                    bookDAO.create(book);
-                    // search
+                    projectDAO.create(project);
                     url = processSearch(request, response);
                 } else {
-                    url = "bookForm.jsp";
-                    request.setAttribute("book", book);
+                    url = "projectForm.jsp";
+                    request.setAttribute("project", project);
                 }
             } catch (Exception e) {
+                e.printStackTrace();
             }
         }
         return url;
@@ -143,20 +116,25 @@ public class MainController extends HttpServlet {
         String url = LOGIN_PAGE;
         try {
             String action = request.getParameter("action");
-            System.out.println("action: " + action);
             if (action == null) {
                 url = LOGIN_PAGE;
             } else {
-                if (action.equals("login")) {
-                    url = processLogin(request, response);
-                } else if (action.equals("logout")) {
-                    url = processLogout(request, response);
-                } else if (action.equals("search")) {
-                    url = processSearch(request, response);
-                } else if (action.equals("delete")) {
-                    url = processDelete(request, response);
-                } else if (action.equals("add")) {
-                    url = processAdd(request, response);
+                switch (action) {
+                    case "login":
+                        url = processLogin(request, response);
+                        break;
+                    case "logout":
+                        url = processLogout(request, response);
+                        break;
+                    case "search":
+                        url = processSearch(request, response);
+                        break;
+                    case "delete":
+                        url = processDelete(request, response);
+                        break;
+                    case "add":
+                        url = processAdd(request, response);
+                        break;
                 }
             }
         } catch (Exception e) {
@@ -167,43 +145,20 @@ public class MainController extends HttpServlet {
         }
     }
 
-// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
+        return "Main Controller for Project Management";
+    }
 }

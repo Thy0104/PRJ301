@@ -4,10 +4,13 @@
     Author     : baothy2004
 --%>
 
-<%@page import="dto.ProjectDTO"%>
+<%@page import="utils.AuthUtils"%>
+<%@page import="dto.BookDTO"%>
+<%@page import="java.awt.print.Book"%>
 <%@page import="java.util.List"%>
 <%@page import="dto.UserDTO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -15,7 +18,7 @@
         <title>JSP Page</title>
 
         <style>
-            .project-table {
+            .book-table {
                 width: 100%;
                 border-collapse: collapse;
                 margin: 25px 0;
@@ -24,7 +27,7 @@
                 box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
             }
 
-            .project-table thead th {
+            .book-table thead th {
                 background-color: #009879;
                 color: #ffffff;
                 text-align: left;
@@ -36,19 +39,19 @@
                 border-bottom: 1px solid #dddddd;
             }
 
-            .project-table tbody tr:nth-of-type(even) {
+            .book-table tbody tr:nth-of-type(even) {
                 background-color: #f3f3f3;
             }
 
-            .project-table tbody tr:last-of-type {
+            .book-table tbody tr:last-of-type {
                 border-bottom: 2px solid #009879;
             }
 
-            .project-table tbody td {
+            .book-table tbody td {
                 padding: 12px 15px;
             }
 
-            .project-table tbody tr:hover {
+            .book-table tbody tr:hover {
                 background-color: #f5f5f5;
                 transition: 0.3s ease;
             }
@@ -134,12 +137,12 @@
             
             /* Responsive design */
             @media screen and (max-width: 600px) {
-                .project-table {
+                .book-table {
                     font-size: 12px;
                 }
 
-                .project-table thead th,
-                .project-table tbody td {
+                .book-table thead th,
+                .book-table tbody td {
                     padding: 8px 10px;
                 }
             }
@@ -148,56 +151,50 @@
     <body> 
         <%@include file="header.jsp" %>
         <div style="min-height: 500px; padding: 10px">
-            <%                if (session.getAttribute("user") != null) {
-                    UserDTO user = (UserDTO) session.getAttribute("user");
-            %>
+            <c:if test="${not empty sessionScope.user}">
+                <c:set var="searchTerm" value="${requestScope.searchTerm==null?'':requestScope.searchTerm}"/>
+                <div class="search-section">
+                    <form action="MainController">
+                        <input type="hidden" name="action" value="search"/>
+                        <label for="searchInput">Search Books:</label>
+                        <input type="text" id="searchInput" name="searchTerm" value="${searchTearm}" class="search-input" placeholder="Enter book title, author or ID..."/>
+                        <input type="submit" value="Search" class="search-btn"/>
+                    </form>
+                </div>
+                <c:set var="isAdmin" value="<%=AuthUtils.isAdmin(session)%>" />
+                <c:if test="${isAdmin}">
+                    <a href="bookform.jsp" class="add-btn">
+                        Add New Book    
+                    </a> 
+                </c:if>
 
-            <%
-                String searchTerm = request.getAttribute("searchTerm") + "";
-                searchTerm = searchTerm.equals("null") ? "" : searchTerm;
-            %>
-           <div class="search-section">
-                <form action="MainController">
-                    <input type="hidden" name="action" value="search"/>
-                    <label for="searchInput">Search Projects:</label>
-                    <input type="text" id="searchInput" name="searchTerm" value="<%=searchTerm%>" class="search-input" placeholder="Enter Project name or ID..."/>
-                    <input type="submit" value="Search" class="search-btn"/>
-                </form>
-            </div>
+                <c:if test="${not empty requestScope.books}">
+                    <table class="book-table">
+                        <thead>
+                            <tr>
+                                <th>BookID</th>
+                                <th>Title</th>
+                                <th>Author</th>
+                                <th>PublishYear</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <c:forEach var="b" items="${requestScope.books}">
+                                <tr>
+                                    <td>${b.bookID}</td>
+                                    <td>${b.title}</td>
+                                    <td>${b.author}</td>
+                                    <td>${b.publishYear}</td>
+                                    <td>${b.price}</td>
+                                    <td>${b.quantity}</td>
+                                    <c:if test="${isAdmin}">
+                                        <td><a href="MainController?action=delete&id=<%=b.getBookID()%>&searchTerm=<%=searchTerm%>">
+                                                <img src="assets/images/icons8-delete-64.png" style="height: 25px"/>
 
-            <a href="Projectform.jsp" class="add-btn">
-                Add New Project    
-            </a>    
-
-            <%
-                if (request.getAttribute("projects") != null) {
-                    List<ProjectDTO> projects = (List<ProjectDTO>) request.getAttribute("books");
-
-            %>
-            <table class="project-table">
-                <thead>
-                    <tr>
-                        <th>Project ID</th>
-                        <th>Project Name</th>
-                        <th>Description</th>
-                        <th>Status</th>
-                        <th>Estimate Launch</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <%            for (ProjectDTO b : projects) {
-                    %>
-                    <tr>
-                        <td><%=b.getProject_id()%></td>
-                        <td><%=b.getProject_name()%></td>
-                        <td><%=b.getDescription()%></td>
-                        <td><%=b.getStatus()%></td>
-                        <td><%=b.getEstimated_launch()%></td>
-                        <td><a href="MainController?action=delete&id=<%=b.getProject_id()%>&searchTerm=<%=searchTerm%>">
-                                <img src="assets/images/icons8-delete-64.png" style="height: 25px"/>
-
-                            </a></td>
+                                            </a></td>
                     </tr>
                     <%
                         }
