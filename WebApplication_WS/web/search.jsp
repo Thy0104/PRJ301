@@ -1,6 +1,6 @@
 <%-- 
     Document   : search
-    Created on : 17-Feb-2025, 09:33:27
+    Created on : 10-Mar-2025, 07:43:52
     Author     : baothy2004
 --%>
 
@@ -10,205 +10,109 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-16WWW">
-        <title>JSP Page</title>
-
-        <style>
-            .project-table {
-                width: 100%;
-                border-collapse: collapse;
-                margin: 25px 0;
-                font-size: 14px;
-                font-family: Arial, sans-serif;
-                box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-            }
-
-            .project-table thead th {
-                background-color: #009879;
-                color: #ffffff;
-                text-align: left;
-                font-weight: bold;
-                padding: 12px 15px;
-            }
-
-            .book-table tbody tr {
-                border-bottom: 1px solid #dddddd;
-            }
-
-            .project-table tbody tr:nth-of-type(even) {
-                background-color: #f3f3f3;
-            }
-
-            .project-table tbody tr:last-of-type {
-                border-bottom: 2px solid #009879;
-            }
-
-            .project-table tbody td {
-                padding: 12px 15px;
-            }
-
-            .project-table tbody tr:hover {
-                background-color: #f5f5f5;
-                transition: 0.3s ease;
-            }
-
-            /* Search section styles */
-            .search-section {
-                background-color: #fff;
-                border-radius: 8px;
-                padding: 20px;
-                margin-bottom: 20px;
-                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-                display: flex;
-                align-items: center;
-            }
-
-            .search-section form {
-                display: flex;
-                align-items: center;
-                flex-grow: 1;
-            }
-
-            .search-section label {
-                margin-right: 10px;
-                font-weight: bold;
-                color: #333;
-            }
-
-            .search-input {
-                flex-grow: 1;
-                padding: 10px;
-                border: 1px solid #ddd;
-                border-radius: 4px;
-                font-size: 14px;
-                margin-right: 10px;
-                transition: border-color 0.3s;
-            }
-
-            .search-input:focus {
-                border-color: #009879;
-                outline: none;
-                box-shadow: 0 0 0 2px rgba(0, 152, 121, 0.2);
-            }
-
-            .search-btn {
-                background-color: #009879;
-                color: white;
-                border: none;
-                border-radius: 4px;
-                padding: 10px 15px;
-                cursor: pointer;
-                font-weight: bold;
-                transition: background-color 0.3s;
-            }
-
-            .search-btn:hover {
-                background-color: #00806a;
-            }
-
-            /* Add button styles */
-            .add-btn {
-                display: inline-block;
-                background-color: #007bff;
-                color: white;
-                text-decoration: none;
-                border-radius: 4px;
-                padding: 10px 15px;
-                margin-bottom: 20px;
-                font-weight: bold;
-                transition: background-color 0.3s;
-            }
-
-            .add-btn:hover {
-                background-color: #0069d9;
-                text-decoration: none;
-            }
-
-            /* Add a nice icon to the add button */
-            .add-btn::before {
-                content: "+";
-                margin-right: 5px;
-                font-weight: bold;
-            }
-            
-            /* Responsive design */
-            @media screen and (max-width: 600px) {
-                .project-table {
-                    font-size: 12px;
-                }
-
-                .project-table thead th,
-                .project-table tbody td {
-                    padding: 8px 10px;
-                }
-            }
-        </style> 
-    </head>
-    <body> 
-        <%@include file="header.jsp" %>
-        <div style="min-height: 500px; padding: 10px">
-            <%                if (session.getAttribute("user") != null) {
-                    UserDTO user = (UserDTO) session.getAttribute("user");
-            %>
-
-            <%
-                String searchTerm = request.getAttribute("searchTerm") + "";
-                searchTerm = searchTerm.equals("null") ? "" : searchTerm;
-            %>
-           <div class="search-section">
-                <form action="MainController">
-                    <input type="hidden" name="action" value="search"/>
-                    <label for="searchInput">Search Projects:</label>
-                    <input type="text" id="searchInput" name="searchTerm" value="<%=searchTerm%>" class="search-input" placeholder="Enter Project name or ID..."/>
-                    <input type="submit" value="Search" class="search-btn"/>
-                </form>
-            </div>
-
-            <a href="Projectform.jsp" class="add-btn">
-                Add New Project    
-            </a>    
-
-            <%
-                if (request.getAttribute("projects") != null) {
-                    List<ProjectDTO> projects = (List<ProjectDTO>) request.getAttribute("books");
-
-            %>
-            <table class="project-table">
-                <thead>
-                    <tr>
-                        <th>Project ID</th>
-                        <th>Project Name</th>
-                        <th>Description</th>
-                        <th>Status</th>
-                        <th>Estimate Launch</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <%            for (ProjectDTO b : projects) {
-                    %>
-                    <tr>
-                        <td><%=b.getProject_id()%></td>
-                        <td><%=b.getProject_name()%></td>
-                        <td><%=b.getDescription()%></td>
-                        <td><%=b.getStatus()%></td>
-                        <td><%=b.getEstimated_launch()%></td>
-                        <td><a href="MainController?action=delete&id=<%=b.getProject_id()%>&searchTerm=<%=searchTerm%>">
-                                <img src="assets/images/icons8-delete-64.png" style="height: 25px"/>
-
-                            </a></td>
-                    </tr>
-                    <%
-                        }
-                    %>
-                </tbody>
-            </table>
-            <%    }
-            } else { %>
-            You do not have permission to access this content.
-            <%}%>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Project Management</title>
+    <style>
+        .project-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            font-size: 14px;
+            font-family: Arial, sans-serif;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+        .project-table thead th {
+            background-color: #009879;
+            color: #ffffff;
+            text-align: left;
+            font-weight: bold;
+            padding: 12px 15px;
+        }
+        .project-table tbody tr {
+            border-bottom: 1px solid #dddddd;
+        }
+        .search-section {
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+        }
+        .search-input {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-right: 10px;
+        }
+        .search-btn {
+            background-color: #009879;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+        .add-btn {
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            text-decoration: none;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <%@include file="header.jsp" %>
+    <div style="min-height: 500px; padding: 10px">
+        <% if (session.getAttribute("user") != null) { %>
+        <div class="search-section">
+            <form action="MainController">
+                <input type="hidden" name="action" value="search"/>
+                <input type="text" name="searchTerm" class="search-input" placeholder="Enter project name or ID..."/>
+                <input type="submit" value="Search" class="search-btn"/>
+            </form>
         </div>
-        <jsp:include page="footer.jsp"/>
-    </body>
+        <a href="projectform.jsp" class="add-btn">Add New Project</a>
+        <%
+            if (request.getAttribute("projects") != null) {
+                List<ProjectDTO> projects = (List<ProjectDTO>) request.getAttribute("projects");
+        %>
+        <table class="project-table">
+            <thead>
+                <tr>
+                    <th>Project ID</th>
+                    <th>Project Name</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th>Estimated Launch</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for (ProjectDTO p : projects) { %>
+                <tr>
+                    <td><%= p.getProject_id()%></td>
+                    <td><%= p.getProject_name() %></td>
+                    <td><%= p.getDescription() %></td>
+                    <td><%= p.getStatus() %></td>
+                    <td><%= p.getEstimated_launch()%></td>
+                    <td>
+                        <a href="MainController?action=delete&id=<%= p.getProject_id() %>">
+                            <img src="assets/images/icons8-delete-64.png" style="height: 25px"/>
+                        </a>
+                    </td>
+                </tr>
+                <% } %>
+            </tbody>
+        </table>
+        <% } %>
+        <% } else { %>
+        <p>You do not have permission to access this content.</p>
+        <% } %>
+    </div>
+    <jsp:include page="footer.jsp"/>
+</body>
 </html>

@@ -22,3 +22,6 @@ INSERT INTO tblUsers (userID, fullName, roleID, password) VALUES
 ('user002', N'Trần Thị Bình', 'US', 'user456');
 GO
 
+ALTER TABLE [dbo].[tblUsers]
+ALTER COLUMN [password] [varchar](250) NOT NULL;
+

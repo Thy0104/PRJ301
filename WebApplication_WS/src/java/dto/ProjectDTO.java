@@ -9,7 +9,6 @@ package dto;
  *
  * @author baothy2004
  */
-import java.sql.Date;
 
 public class ProjectDTO  {
     private int project_id;
@@ -19,6 +18,11 @@ public class ProjectDTO  {
     private String estimated_launch;
 
     public ProjectDTO() {
+        this.project_id = project_id;
+        this.project_name = project_name;
+        this.description = description;
+        this.status = status;
+        this.estimated_launch = estimated_launch;
     }
 
     public ProjectDTO(int project_id, String project_name, String description, String status, String estimated_launch) {
@@ -27,6 +31,10 @@ public class ProjectDTO  {
         this.description = description;
         this.status = status;
         this.estimated_launch = estimated_launch;
+    }
+
+    public ProjectDTO(String project_id, String project_name, String description, String status, String estimated_launch) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     public int getProject_id() {

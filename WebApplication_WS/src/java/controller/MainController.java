@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package controller;
 
 import dao.ProjectDAO;
@@ -5,6 +10,7 @@ import dao.UserDAO;
 import dto.ProjectDTO;
 import dto.UserDTO;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -13,103 +19,39 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import utils.AuthUtils;
 
+/**
+ *
+ * @author baothy2004
+ */
 @WebServlet(name = "MainController", urlPatterns = {"/MainController"})
 public class MainController extends HttpServlet {
-
     private ProjectDAO projectDAO = new ProjectDAO();
-    private static final String LOGIN_PAGE = "login.jsp";
-
-    private String processLogin(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String url = LOGIN_PAGE;
-        String username = request.getParameter("txtUsername");
-        String password = request.getParameter("txtPassword");
-        if (AuthUtils.isValidLogin(username, password)) {
-            url = "search.jsp";
-            UserDTO user = AuthUtils.getUser(username);
-            request.getSession().setAttribute("user", user);
-            processSearch(request, response);
-        } else {
-            request.setAttribute("message", "Incorrect Username or Password");
-        }
-        return url;
+    private static final String LOGIN_PAGE ="login.jsp";
+    
+    public UserDTO getUser (String strUsername){
+        UserDAO udao = new UserDAO();
+        UserDTO user = udao.readById(strUsername);
+        return user;
     }
-
-    private String processLogout(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String url = LOGIN_PAGE;
-        HttpSession session = request.getSession();
-        if (AuthUtils.isLoggedIn(session)) {
-            session.invalidate();
-        }
-        return url;
+    
+    public boolean isValidLogin (String strUsername, String strPassword){
+        UserDTO user = getUser(strUsername);
+        System.out.println(user);
+        System.out.println(strPassword);
+        return user != null && user.getPassword().equals(strPassword);
     }
-
-    public String processSearch(HttpServletRequest request, HttpServletResponse response)
+    
+    public void search(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String url = LOGIN_PAGE;
-        HttpSession session = request.getSession();
-        if (AuthUtils.isLoggedIn(session)) {
-            String searchTerm = request.getParameter("searchTerm");
-            if (searchTerm == null) {
-                searchTerm = "";
-            }
-            List<ProjectDTO> projects = projectDAO.searchByName(searchTerm);
-            request.setAttribute("projects", projects);
-            request.setAttribute("searchTerm", searchTerm);
-            url = "search.jsp";
+        String searchTerm = request.getParameter("searchTerm");
+        if (searchTerm == null) {
+            searchTerm = "";
         }
-        return url;
+        List<ProjectDTO> projects = projectDAO.searchByName(searchTerm);
+        request.setAttribute("projects", projects);
+        request.setAttribute("searchTerm", searchTerm);
     }
-
-    public String processDelete(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String url = LOGIN_PAGE;
-        HttpSession session = request.getSession();
-        if (AuthUtils.isAdmin(session)) {
-            String project_id = request.getParameter("project_id");
-            projectDAO.deleteProject(project_id);
-            url = processSearch(request, response);
-        }
-        return url;
-    }
-
-    public String processAdd(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String url = LOGIN_PAGE;
-        HttpSession session = request.getSession();
-        if (AuthUtils.isAdmin(session)) {
-            try {
-                boolean checkError = false;
-                String project_id = request.getParameter("txtProjectID");
-                String project_name = request.getParameter("txtProjectName");
-                String description = request.getParameter("txtDescription");
-                String status = request.getParameter("txtStatus");
-                String estimated_launch = request.getParameter("txtEstimatedLaunch");
-
-                if (project_id == null || project_id.trim().isEmpty()) {
-                    checkError = true;
-                    request.setAttribute("txtProjectID_error", "Project ID cannot be empty.");
-                }
-
-                ProjectDTO project = new ProjectDTO(project_id, project_name, description, status, estimated_launch);
-
-                if (!checkError) {
-                    projectDAO.create(project);
-                    url = processSearch(request, response);
-                } else {
-                    url = "projectForm.jsp";
-                    request.setAttribute("project", project);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return url;
-    }
-
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -119,21 +61,77 @@ public class MainController extends HttpServlet {
             if (action == null) {
                 url = LOGIN_PAGE;
             } else {
+                HttpSession session = request.getSession();
+                UserDTO user = (UserDTO) session.getAttribute("user");
+
                 switch (action) {
                     case "login":
-                        url = processLogin(request, response);
+                        String strUsername = request.getParameter("txtUsername");
+                        String strPassword = request.getParameter("txtPassword");
+                        if (isValidLogin(strUsername, strPassword)) {
+                            url = "search.jsp";
+                            user = getUser(strUsername);
+                            session.setAttribute("user", user);
+                            search(request, response);
+                        } else {
+                            request.setAttribute("message", "Incorrect UserID or Password");
+                        }
                         break;
+                        
                     case "logout":
-                        url = processLogout(request, response);
+                        if (session.getAttribute("user") != null) {
+                            session.invalidate(); 
+                        }
+                        url = LOGIN_PAGE;
                         break;
+                        
                     case "search":
-                        url = processSearch(request, response);
+                        if (user != null) {
+                            search(request, response);
+                            url = "search.jsp";
+                        }
                         break;
+
                     case "delete":
-                        url = processDelete(request, response);
+                        if (user != null && user.getRole().equals("AD")) {
+                            String id = request.getParameter("id");
+                            if (id != null && !id.trim().isEmpty()) {
+                                projectDAO.delete(id);
+                            }
+                            search(request, response);
+                            url = "search.jsp";
+                        }
                         break;
+
                     case "add":
-                        url = processAdd(request, response);
+                        if (user != null && user.getRole().equals("AD")) {
+                            boolean checkError = false;
+                            String project_id = request.getParameter("txtProjectID");
+                            String project_name = request.getParameter("txtProjectName");
+                            String description = request.getParameter("txtDescription");
+                            String status = request.getParameter("txtStatus");
+                            String estimated_launch = request.getParameter("txtEstimatedLaunch");
+
+                            if (project_id == null || project_id.trim().isEmpty()) {
+                                checkError = true;
+                                request.setAttribute("txtProjectID_error", "Project ID cannot be empty.");
+                            }
+
+                            ProjectDTO project = new ProjectDTO(project_id, project_name, description, status, estimated_launch);
+                            
+                            if (!checkError) {
+                                projectDAO.create(project);
+                                search(request, response);
+                                url = "search.jsp";
+                            } else {
+                                url = "projectForm.jsp";
+                                request.setAttribute("project", project);
+                            }
+                        }
+                        break;
+                        
+                    default:
+                        url = LOGIN_PAGE;
                         break;
                 }
             }
@@ -145,20 +143,43 @@ public class MainController extends HttpServlet {
         }
     }
 
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    /**
+     * Handles the HTTP <code>GET</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
+    /**
+     * Handles the HTTP <code>POST</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
     @Override
     public String getServletInfo() {
-        return "Main Controller for Project Management";
-    }
+        return "Short description";
+    }// </editor-fold>
+
 }

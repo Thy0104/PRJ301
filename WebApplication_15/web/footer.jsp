@@ -1,6 +1,6 @@
 <%-- 
     Document   : footer
-    Created on : 05-Mar-2025, 10:59:13
+    Created on : 17-Feb-2025, 10:57:03
     Author     : baothy2004
 --%>
 
@@ -77,7 +77,7 @@
     <div class="footer-container">
         <div class="footer-section">
             <h3>Về chúng tôi</h3>
-            <p>Game Online là điểm đến tin cậy cho những sản phẩm chất lượng với giá cả hợp lý. Chúng tôi cam kết mang đến trải nghiệm mua sắm tốt nhất cho khách hàng.</p>
+            <p>Shop Online là điểm đến tin cậy cho những sản phẩm chất lượng với giá cả hợp lý. Chúng tôi cam kết mang đến trải nghiệm mua sắm tốt nhất cho khách hàng.</p>
         </div>
         
         <div class="footer-section">
