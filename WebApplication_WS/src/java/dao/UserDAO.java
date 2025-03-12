@@ -78,8 +78,8 @@ public class UserDAO implements IDAO <UserDTO, String>{
                 UserDTO user = new UserDTO(
                         rs.getString("Username"),
                         rs.getString("Name"),
-                        rs.getString("Role"),
-                        rs.getString("Password"));
+                        rs.getString("Password"),
+                        rs.getString("Role"));
                 return user;
             }
         } catch (ClassNotFoundException ex) {
@@ -95,8 +95,8 @@ public class UserDAO implements IDAO <UserDTO, String>{
         String sql = "UPDATE [tblUsers] SET "
                 + "[Name] = ?, "
                 + "[Password] = ?, "
-                + "[Role] =? "
-                + "WHERE [Username] = ?";
+                + "[Username] =? "
+                + "WHERE [Role] = ?";
         Connection conn;
         try {
             conn = DBUtils.getConnection();

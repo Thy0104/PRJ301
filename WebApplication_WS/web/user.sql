@@ -1,24 +1,18 @@
--- Tạo database
-CREATE DATABASE prj301_1820_slot8
+﻿CREATE DATABASE prj301_WS1
 GO
 
--- Sử dụng database vừa tạo
-USE prj301_1820_slot8
+USE prj301_WS1
 GO
 
--- Tạo bảng tblUsers
 CREATE TABLE tblUsers (
-    userID varchar(50) PRIMARY KEY,
-    fullName nvarchar(100) NOT NULL,
-    roleID char(2) NOT NULL,
-    password varchar(50) NOT NULL
+    Username VARCHAR(50) PRIMARY KEY,
+    Name VARCHAR(100) NOT NULL,
+    Password VARCHAR(255) NOT NULL,
+    Role VARCHAR(20) NOT NULL CHECK (Role IN ('Founder', 'Team Member'))
 );
-GO
 
--- Thêm 3 người dùng mẫu với tên tiếng Việt
-INSERT INTO tblUsers (userID, fullName, roleID, password) VALUES
-('admin01', N'Quản Trị Viên', 'AD', 'admin123'),
-('user001', N'Nguyễn Văn Anh', 'US', 'user123'),
-('user002', N'Trần Thị Bình', 'US', 'user456');
-GO
+INSERT INTO tblUsers (username, Name, password, role) 
+VALUES 
+('admin01', 'Nguyễn Hoàng Bảo Thy', 'admin123', 'Founder'),
+('user01', 'Nguyễn Võ Anh Thy', 'user123', 'Team Member')
 

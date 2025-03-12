@@ -34,7 +34,7 @@ public class ProjectDTO  {
     }
 
     public ProjectDTO(String project_id, String project_name, String description, String status, String estimated_launch) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       
     }
 
     public int getProject_id() {
