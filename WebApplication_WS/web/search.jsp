@@ -75,7 +75,7 @@
                 <input type="submit" value="Search" class="search-btn"/>
             </form>
         </div>
-        <a href="projectform.jsp" class="add-btn">Add New Project</a>
+        <a href="ProjectForm.jsp" class="add-btn">Add New Project</a>
         <%
             if (request.getAttribute("projects") != null) {
                 List<ProjectDTO> projects = (List<ProjectDTO>) request.getAttribute("projects");

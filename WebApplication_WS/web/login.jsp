@@ -78,7 +78,7 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <%@include file ="header.jsp" %>
+        
         <div class="login-container">
             <div class="login-form">
                 <h2 class="form-title">Đăng nhập</h2>

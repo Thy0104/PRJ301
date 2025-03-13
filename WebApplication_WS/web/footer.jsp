@@ -7,7 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <style>
     .footer {
-        background-color: #2c3e50;
+        background-color: #6666ff;
         color: #fff;
         padding: 3rem 0;
         margin-top: 2rem;
@@ -25,7 +25,7 @@
     .footer-section h3 {
         font-size: 1.2rem;
         margin-bottom: 1rem;
-        color: #3498db;
+        color: #ff3333;
     }
 
     .footer-section p {
@@ -77,7 +77,7 @@
     <div class="footer-container">
         <div class="footer-section">
             <h3>Về chúng tôi</h3>
-            <p>Game Online là điểm đến tin cậy cho những sản phẩm chất lượng với giá cả hợp lý. Chúng tôi cam kết mang đến trải nghiệm mua sắm tốt nhất cho khách hàng.</p>
+            <p>START UP PROJECT là điểm đến tin cậy cho những dự án đặc sắc. Chúng tôi cam kết mang đến trải nghiệm khám phá tốt nhất cho khách hàng.</p>
         </div>
         
         <div class="footer-section">
@@ -109,6 +109,6 @@
     </div>
     
     <div class="copyright">
-        <p>&copy; 2024 Game Online. Tất cả quyền được bảo lưu.</p>
+        <p>&copy; 2024 START UP PROJECT. Tất cả quyền được bảo lưu.</p>
     </div>
 </footer>

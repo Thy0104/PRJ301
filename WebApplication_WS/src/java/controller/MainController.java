@@ -93,7 +93,7 @@ public class MainController extends HttpServlet {
                         break;
 
                     case "delete":
-                        if (user != null && user.getRole().equals("AD")) {
+                        if (user != null && user.getRole().equals("Founder")) {
                             String id = request.getParameter("id");
                             if (id != null && !id.trim().isEmpty()) {
                                 projectDAO.delete(id);
@@ -104,7 +104,7 @@ public class MainController extends HttpServlet {
                         break;
 
                     case "add":
-                        if (user != null && user.getRole().equals("AD")) {
+                        if (user != null && user.getRole().equals("Founder")) {
                             boolean checkError = false;
                             String project_id = request.getParameter("txtProjectID");
                             String project_name = request.getParameter("txtProjectName");
@@ -124,7 +124,7 @@ public class MainController extends HttpServlet {
                                 search(request, response);
                                 url = "search.jsp";
                             } else {
-                                url = "projectForm.jsp";
+                                url = "ProjectForm.jsp";
                                 request.setAttribute("project", project);
                             }
                         }
