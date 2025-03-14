@@ -21,7 +21,7 @@ import utils.DBUtils;
 
 /**
  *
- * @author tungi
+ * @author baothy2004
  */
 public class UserDAO implements IDAO<UserDTO, String> {
 
