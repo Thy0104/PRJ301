@@ -13,6 +13,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
+        <link rel="stylesheet" href="assets/css/exam.css">
     </head>
     <body>
         <jsp:include page="header.jsp"/>
@@ -20,27 +21,25 @@
             ExamDAO examDAO = new ExamDAO();
             List<ExamDTO> exams = examDAO.getAllExams();
         %>
-
-        <h2>Exam List</h2>
-        <table border="1">
-            <tr>
-                <th>Title</th>
-                <th>Subject</th>
-                <th>Marks</th>
-                <th>Duration</th>
-                <th>Action</th>
-            </tr>
-            <% for (ExamDTO exam : exams) { %>
+        <div class="container">
+            <h2>Exam List</h2>
+            <table>
                 <tr>
-                    <td><%= exam.getExamTitle() %></td>
-                    <td><%= exam.getSubject() %></td>
-                    <td><%= exam.getTotalMarks() %></td>
-                    <td><%= exam.getDuration() %> min</td>
-                    <td><a href="examDetails.jsp?examID=<%= exam.getExamID() %>">View</a></td>
+                    <th>Title</th>
+                    <th>Subject</th>
+                    <th>Duration (minutes)</th>
+                    <th>Action</th>
                 </tr>
-            <% } %>
-        </table>
-
-        <jsp:include page="footer.jsp"/>
+                <% for (ExamDTO exam : exams) { %>
+                    <tr>
+                        <td><%= exam.getExamTitle() %></td>
+                        <td><%= exam.getSubject() %></td>
+                        <td><%= exam.getDuration() %></td>
+                        <td><a href="examDetails.jsp?examID=<%= exam.getExamID() %>" class="btn">View Details</a></td>
+                    </tr>
+                <% } %>
+            </table>
+        </div>
+    <jsp:include page="footer.jsp"/>
     </body>
 </html>

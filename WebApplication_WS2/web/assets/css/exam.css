@@ -7,16 +7,49 @@ and open the template in the editor.
     Created on : 17-Mar-2025, 00:01:40
     Author     : baothy2004
 */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    text-align: center;
+}
+
+.container {
+    width: 50%;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    color: #333;
+}
+
 table {
     width: 100%;
     border-collapse: collapse;
+    margin-top: 10px;
 }
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
 th, td {
     padding: 10px;
-    border: 1px solid black;
     text-align: left;
 }
-a {
-    color: blue;
+
+.btn {
+    display: inline-block;
+    padding: 8px 15px;
+    background-color: #28a745;
+    color: white;
     text-decoration: none;
+    border-radius: 5px;
+}
+
+.btn:hover {
+    background-color: #218838;
 }

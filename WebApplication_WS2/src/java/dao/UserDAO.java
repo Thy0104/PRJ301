@@ -16,15 +16,20 @@ import utils.DBUtils;
  * @author baothy2004
  */
 public class UserDAO {
-    public UserDTO login(String username, String password) {
+    public UserDTO validateUser(String username, String password) {
         String sql = "SELECT * FROM tblUsers WHERE username = ? AND password = ?";
         try (Connection conn = DBUtils.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, username);
-            stmt.setString(2, password);
-            ResultSet rs = stmt.executeQuery();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, username);
+            ps.setString(2, password);
+            ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                return new UserDTO(rs.getString("username"), rs.getString("name"), rs.getString("password"), rs.getString("role"));
+                return new UserDTO(
+                    rs.getString("username"),
+                    rs.getString("name"),
+                    rs.getString("password"),
+                    rs.getString("role")
+                );
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -32,3 +37,4 @@ public class UserDAO {
         return null;
     }
 }
+

@@ -7,6 +7,9 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
+    <head>
+        <link rel="stylesheet" href="assets/css/header_footer.css"> 
+    </head>
     <header>
     <h2>Online Examination System</h2>
     <nav>
