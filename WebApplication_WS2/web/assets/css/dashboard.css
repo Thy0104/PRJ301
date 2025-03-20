@@ -10,7 +10,7 @@ and open the template in the editor.
 body {
     font-family: Arial, sans-serif;
     text-align: center;
-    background-color: #f9f9f9;
+    background-color: #ccffff;
 }
 
 h2 {
@@ -18,12 +18,12 @@ h2 {
 }
 
 nav {
-    background: #007BFF;
+    background: #ccffff;
     padding: 10px;
 }
 
 nav a {
-    color: white;
+    color: #ccffff;
     text-decoration: none;
     margin: 0 15px;
     font-weight: bold;

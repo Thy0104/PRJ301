@@ -45,7 +45,7 @@ public class CreateExamServlet extends HttpServlet {
         boolean success = examDAO.createExam(newExam);
 
         if (success) {
-            response.sendRedirect("examList.jsp");
+            response.sendRedirect("dashboard.jsp");
         } else {
             request.setAttribute("errorMessage", "Failed to create exam.");
             request.getRequestDispatcher("createExam.jsp").forward(request, response);
