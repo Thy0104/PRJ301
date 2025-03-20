@@ -12,6 +12,8 @@ create table tblUsers (
 )
 
 INSERT INTO tblUsers (username, name, password, role) VALUES
+('thynguyen', 'Nguyễn Hoàng Bảo Thy', 'thy123', 'Instructor'),
+('anhthy', 'Nguyễn Võ Anh Thy', 'thy256', 'Student'),
 ('nguyenvanphuc', 'Nguyễn Văn Phúc', 'phuc123', 'Instructor'),
 ('tranthithuy', 'Trần Thị Thúy', 'thuysecure', 'Student'),
 ('leminhquan', 'Lê Minh Quân', 'quanpass', 'Instructor'),

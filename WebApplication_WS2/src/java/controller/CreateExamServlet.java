@@ -30,7 +30,7 @@ public class CreateExamServlet extends HttpServlet {
         UserDTO user = (UserDTO) session.getAttribute("loggedInUser");
 
         if (user == null || !"Instructor".equals(user.getRole())) {
-            response.sendRedirect("jsp/login.jsp");
+            response.sendRedirect("login.jsp");
             return;
         }
 
@@ -45,7 +45,7 @@ public class CreateExamServlet extends HttpServlet {
         boolean success = examDAO.createExam(newExam);
 
         if (success) {
-            response.sendRedirect("jsp/dashboard.jsp");
+            response.sendRedirect("examList.jsp");
         } else {
             request.setAttribute("errorMessage", "Failed to create exam.");
             request.getRequestDispatcher("createExam.jsp").forward(request, response);
